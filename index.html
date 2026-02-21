@@ -9,116 +9,79 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Microsoft Yahei", sans-serif;
+            font-family: "Microsoft YaHei", sans-serif;
         }
-
         body {
-            background-color: #f5f5f5;
-            padding: 2rem;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
         }
-
-        .product-card {
+        .container {
+            background: #ffffff;
+            width: 100%;
             max-width: 400px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 2rem;
+            border-radius: 16px;
+            padding: 25px;
             text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
-
-        .product-title {
-            font-size: 1.8rem;
-            color: #222;
-            margin-bottom: 1.5rem;
+        img {
+            width: 80%;
+            max-width: 280px;
+            height: auto;
+            margin-bottom: 30px;
+        }
+        .info-text {
+            font-size: 28px;
             font-weight: bold;
+            color: #ff6d00;
+            text-shadow: 0 0 8px #ffd600, 0 0 16px #ff9100;
+            margin: 18px 0;
         }
-
-        .product-image {
+        .btn {
             width: 100%;
-            height: 250px;
-            object-fit: contain;
-            margin-bottom: 1.5rem;
-            border-radius: 8px;
-        }
-
-        .glow-text-group {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        /* 🔥 这里修复：发光更柔和、文字超级清晰 */
-        .glow-text {
-            font-size: 1.2rem;
+            padding: 18px;
+            font-size: 22px;
             font-weight: bold;
-            color: #ff9500;
-            text-shadow: 
-                0 0 3px #ff9500,
-                0 0 6px #ff9500;
-        }
-
-        .btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .buy-btn, .surprise-btn {
-            width: 100%;
-            padding: 1rem;
             border: none;
-            border-radius: 8px;
-            font-size: 1.2rem;
-            font-weight: bold;
+            border-radius: 12px;
+            color: white;
+            margin: 10px 0;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
         }
-
-        .buy-btn {
-            background-color: #faad14;
-            color: white;
+        .btn-buy {
+            background: #ffb300;
         }
-
-        .buy-btn:hover {
-            background-color: #fa8c16;
+        .btn-surprise {
+            background: #6200ea;
+        }
+        .btn-surprise-item {
+            background: #ff4444;
+            width: 100%;
+            margin: 10px 0;
+        }
+        .btn:hover {
+            opacity: 0.9;
             transform: translateY(-2px);
         }
-
-        .surprise-btn {
-            background-color: #722ed1;
-            color: white;
-        }
-
-        .surprise-btn:hover {
-            background-color: #531dab;
-            transform: translateY(-2px);
-        }
-
         .popup {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: white;
-            padding: 1.5rem 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            font-size: 1.1rem;
-            color: #e53935;
-            font-weight: bold;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
+            background: #212121;
+            color: #ffffff;
+            padding: 25px 40px;
+            border-radius: 12px;
+            font-size: 20px;
+            display: none;
             z-index: 999;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
-
-        .popup.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
         .surprise-page {
             display: none;
             position: fixed;
@@ -126,208 +89,148 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: #ffffff;
             z-index: 1000;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
-            gap: 1.5rem;
+            padding: 20px;
         }
-
-        .surprise-page.show {
+        .surprise-page.active {
             display: flex;
         }
-
-        .surprise-page h2 {
-            color: white;
-            font-size: 2rem;
-            text-shadow: 0 0 10px #ffd700;
+        .surprise-page.dimmed {
+            filter: grayscale(100%) brightness(50%);
+            pointer-events: none;
         }
-
-        .surprise-option {
-            padding: 1.2rem 2.5rem;
-            background: linear-gradient(135deg, #ff6b6b, #feca57);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-        }
-
-        .surprise-option:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
-        }
-
-        .back-btn {
-            margin-top: 1rem;
-            padding: 0.8rem 1.5rem;
-            background: #333;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        /* 密钥弹窗样式 */
         .key-popup {
+            display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #fff;
+            background: #ffffff;
             padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-            z-index: 2000;
-            display: none;
-            text-align: center;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            z-index: 1001;
             width: 90%;
-            max-width: 350px;
+            max-width: 360px;
+            text-align: center;
         }
-
-        .key-popup.show {
+        .key-popup.active {
             display: block;
         }
-
-        .key-popup input {
+        .key-input {
+            padding: 12px 16px;
+            font-size: 18px;
             width: 100%;
-            padding: 12px;
-            margin: 15px 0;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-            outline: none;
+            margin: 20px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
         }
-
-        .key-btn {
-            padding: 10px 20px;
-            background: #722ed1;
-            color: #fff;
+        .result-text {
+            margin: 10px 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #333;
+            color: white;
             border: none;
-            border-radius: 6px;
+            padding: 10px 16px;
+            border-radius: 8px;
             cursor: pointer;
         }
-
-        .key-tip {
-            color: red;
-            font-size: 12px;
-            margin-top: 5px;
-            display: none;
+        .close-key-popup {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
         }
     </style>
 </head>
 <body>
 
-<div class="product-card">
-    <h1 class="product-title">钛风🐾来財版</h1>
-    
-    <img 
-        src="https://img.cdn1.vip/i/69996e6779e73_1771662951.webp" 
-        alt="钛风来財版产品图" 
-        class="product-image"
-    >
+    <div class="container" id="mainPage">
+        <img src="https://img.cdn1.vip/i/69996e6779e73_1771662951.webp" alt="钛风">
 
-    <div class="glow-text-group">
-        <div class="glow-text">5折优惠</div>
-        <div class="glow-text">当天发货</div>
-        <div class="glow-text">现在就能订购</div>
+        <div class="info-text">5折优惠</div>
+        <div class="info-text">当天发货</div>
+        <div class="info-text">现在就能订购</div>
+
+        <button class="btn btn-buy" onclick="showPopup()">点击购买</button>
+        <button class="btn btn-surprise" onclick="showSurprisePage()">小惊喜</button>
     </div>
 
-    <div class="btn-group">
-        <button class="buy-btn" id="buyBtn">点击购买</button>
-        <button class="surprise-btn" id="surpriseBtn">小惊喜</button>
+    <div class="popup" id="popup">我只能是🐾灰澜🐾ʰᵘᵉⁱ ˡᵃⁿ⚡️的</div>
+
+    <div class="surprise-page" id="surprisePage">
+        <button class="back-btn" onclick="hideSurprisePage()">返回</button>
+        
+        <button class="btn btn-surprise-item" onclick="window.open('https://img.cdn1.vip/i/69997b001933d_1771666176.webp')">惊喜一</button>
+        <button class="btn btn-surprise-item" onclick="window.open('https://www.12110.com')">惊喜二</button>
+        <button class="btn btn-surprise-item" onclick="showKeyPopup()">惊喜三</button>
     </div>
-</div>
 
-<!-- 购买弹窗 -->
-<div class="popup" id="popup">我只能是@🐾灰澜🐾ʰᵘᵉⁱ ˡᵃⁿ⚡️的</div>
+    <div class="key-popup" id="keyPopup">
+        <button class="close-key-popup" onclick="hideKeyPopup()">×</button>
+        <div style="font-size: 22px; font-weight: bold; margin-bottom: 10px;">请输入密钥解锁惊喜三</div>
+        <input type="text" class="key-input" id="keyInput" placeholder="输入密钥">
+        <button class="btn btn-surprise-item" onclick="checkKey()">解锁惊喜三</button>
+        <div class="result-text" id="resultText"></div>
+    </div>
 
-<!-- 惊喜页面 -->
-<div class="surprise-page" id="surprisePage">
-    <h2>选择你的惊喜</h2>
-    <button class="surprise-option" id="surprise1">惊喜一</button>
-    <button class="surprise-option" id="surprise2">惊喜二</button>
-    <button class="surprise-option" id="surprise3">惊喜三</button>
-    <button class="back-btn" id="backBtn">返回</button>
-</div>
-
-<!-- 惊喜三密钥验证 -->
-<div class="key-popup" id="keyPopup">
-    <h3>请输入惊喜密钥</h3>
-    <input type="text" id="keyInput" placeholder="请输入密钥">
-    <div class="key-tip" id="keyTip">密钥错误，请重新输入</div>
-    <button class="key-btn" id="submitKey">确认解锁</button>
-</div>
-
-<script>
-    const buyBtn = document.getElementById('buyBtn');
-    const popup = document.getElementById('popup');
-    const surpriseBtn = document.getElementById('surpriseBtn');
-    const surprisePage = document.getElementById('surprisePage');
-    const backBtn = document.getElementById('backBtn');
-
-    // 购买按钮
-    buyBtn.onclick = () => {
-        popup.classList.add('show');
-        setTimeout(() => popup.classList.remove('show'), 3000);
-    };
-
-    // 打开惊喜页
-    surpriseBtn.onclick = () => surprisePage.classList.add('show');
-    backBtn.onclick = () => surprisePage.classList.remove('show');
-
-    // 惊喜一
-    document.getElementById('surprise1').onclick = () => {
-        window.open('https://s1.img-e.com/20260221/6999c087374d8.jpg');
-    };
-
-    // 惊喜二
-    document.getElementById('surprise2').onclick = () => {
-        window.open('https://s1.img-e.com/20260221/6999c05e3c74d.jpg');
-    };
-
-    // 惊喜三（带密钥）
-    const keyPopup = document.getElementById('keyPopup');
-    const keyInput = document.getElementById('keyInput');
-    const keyTip = document.getElementById('keyTip');
-    const submitKey = document.getElementById('submitKey');
-    const correctKey = 'taifeng78cnb';
-    const url3 = '
-    document.getElementById('surprise3').onclick = () => {www.12110.com';
-
-        keyPopup.classList.add('show');
-        keyTip.style.display = 'none';
-        keyInput.value = '';
-        keyInput.focus();
-    };
-
-    function forceOpen(url) {
-        const a = document.createElement('a');
-        a.href = url;
-        a.target = '_blank';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    }
-
-    submitKey.onclick = () => {
-        const key = keyInput.value.trim();
-        if (key === correctKey) {
-            forceOpen(url3);
-            keyPopup.classList.remove('show');
-        } else {
-            keyTip.style.display = 'block';
+    <script>
+        function showPopup() {
+            const p = document.getElementById('popup');
+            p.style.display = 'block';
+            setTimeout(() => {
+                p.style.display = 'none';
+            }, 3000);
         }
-    };
 
-    keyInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') submitKey.click();
-    });
-</script>
+        function showSurprisePage() {
+            document.getElementById('surprisePage').classList.add('active');
+        }
+
+        function hideSurprisePage() {
+            document.getElementById('surprisePage').classList.remove('active');
+            hideKeyPopup();
+        }
+
+        function showKeyPopup() {
+            document.getElementById('surprisePage').classList.add('dimmed');
+            document.getElementById('keyPopup').classList.add('active');
+        }
+
+        function hideKeyPopup() {
+            document.getElementById('surprisePage').classList.remove('dimmed');
+            document.getElementById('keyPopup').classList.remove('active');
+            document.getElementById('keyInput').value = '';
+            document.getElementById('resultText').textContent = '';
+        }
+
+        function checkKey() {
+            const val = document.getElementById('keyInput').value.trim();
+            const result = document.getElementById('resultText');
+            if (val === 'taifeng78cnb') {
+                result.textContent = '✅ 密钥正确！恭喜解锁惊喜三！';
+                result.style.color = '#00c853';
+            } else {
+                result.textContent = '❌ 密钥错误，请重试';
+                result.style.color = '#d32f2f';
+            }
+        }
+    </script>
 
 </body>
-</html>
+            </html>
