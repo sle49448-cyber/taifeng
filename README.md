@@ -1,96 +1,96 @@
-<超文本标记语言朗="zh-CN">
-<元字符集="UTF-8">
-<头>
-<标题>钛风🐾来诣版</标题>
-<风格>
-* {
-边缘: 0;
-填充: 0;
-箱体尺寸: 边框框;
-字体系列："微软雅黑"，无衬线；
+<html lang="zh-CN">
+ <head> 
+  <meta charset="UTF-8"> 
+  <title>钛风🐾来財版</title> 
+  <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
         }
-身体{
-背景：#FFFFFF；
-颜色: #000;
-文本对齐: 中心;
-填充：50px20px；
+        body {
+            background: #ffffff;
+            color: #000;
+            text-align: center;
+            padding: 50px 20px;
         }
-.容器{
-最大宽度：400px；
-边缘: 0 自动;
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
         }
-H1{
-字体大小：28PX；
-底边距：20px；
-颜色: #000;
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #000;
         }
-.goods-img{
-宽度: 100%;
-边界半径：12px；border-radius:12px；
-底边距：20px；margin-bottom:20px；
-对象匹配：盖；对象匹配：盖；
+        .goods-img {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            object-fit: cover;
         }
-.tags{{
-显示：柔性；显示：柔性；
-对齐-内容：居中；对齐-内容：居中；
-间隙：15px；
-底边距：25px；margin-bottom:25px；
-font-size:26px；font-size:26px；
-字体粗细：粗体；字体粗细：粗体；
-颜色：#ff4d4f；颜色：#ff4d4f；
+        .tags {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            font-size: 26px;
+            font-weight: bold;
+            color: #ff4d4f;
         }
-.buy-btn{{
-填料：14px40px；padding:14px40px；
-字体大小：18px；font-size:18px；
-背景：#ff4d4f；背景：#ff4d4f；
-颜色：#FFF；颜色：#FFF；
-边框：无；边框：无；
-边界半径：8px；border-radius:8px；
-光标：指针；光标：指针；
-字体粗细：粗体；字体粗细：粗体；
+        .buy-btn {
+            padding: 14px 40px;
+            font-size: 18px;
+            background: #ff4d4f;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
         }
 
-/* 弹窗样式*//*弹窗样式 */
-.modal{.modal{
-位置：固定；位置：固定；
-顶部：50%；顶部：50%；
-左侧：50%；左侧：50%；
-转换：平移(-50%，-50%)；转换：平移(-50%，-50%)；
-背景：#FFF；背景：#FFF；
-边界半径：12px；边界半径：12px；
-<
->
-字体粗细：粗体；字体粗细：粗体；
-"容器"
-颜色：#ff4d4f；颜色：#ff4d4f；
-显示：无；显示：无；
-Z指数：999；Z指数：999；
+        /* 弹窗样式 */
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff4d4f;
+            display: none;
+            z-index: 999;
         }
-</风格></风格>风格></风格>
-<脚本src="js/jq.js"></脚本><脚本src="js/jq.js"></脚本>脚本src="js/jq.js"></脚本><脚本src="js/jq.js"></脚本>脚本src="js/jq.js"></脚本><脚本src="js/jq.js"></脚本>脚本src="js/jq.js"></脚本><脚本src="js/jq.js"></脚本>
-</头></头>头></头>头></头>头></头>
-<正文ID="v1"><正文ID="v1"><正文ID="v1"><正文ID="v1"><身体身份标识="v1">
-<div身份标识="v2"班级="容器"><div身份标识="v2"班级="容器">div id="v2"class="container"><div身份标识="v2"班级="容器">div id="v2"class="container"><div身份标识="v2"班级="容器">div id="v2"class="container"><div身份标识="v2"班级="容器">
-<h1id="v3">钛风n-0来浔版</H1><h1id="v3">钛风n-0来浔版</H1>H1ID="v3">钛风n-0来浔版</H1><h1id="v3">钛风n-0来浔版</H1>h1id="v3">钛风n-0来浔版</H1><h1id="v3">钛风n-0来浔版</H1>H1 id="v3">钛风n-0来浔版</H1><H1身份标识="v3">钛风🐾来诣版</H1> 
-<IMG身份标识="v4"班级="货物-img"src="/sdcard/Pictures/QQ/Image_1770534776020.PNG"alt="钛风来览"><IMG身份标识="v4"班级="货物-img"src="/sdcard/Pictures/QQ/Image_1770534776020.png"一个Lt="钛风来莅版">IMG ID="v4"class="goods-img"src="/sdcard/Pictures/QQ/Image_1770534776020.PNG"alt="钛风来览"><IMG身份标识="v4"班级="货物-img"src="/sdcard/Pictures/QQ/Image_1770534776020.png"alt="钛风来财版">
-<div身份标识="v5"班级="标签"><div身份标识="v5"班级="标签">div id="v5"class="tags"><div身份标识="v5"班级="标签">
-<跨度身份标识="v6">5折优惠</跨度><跨度身份标识="v6">5折优惠</跨度>span ID="v6">5折优惠</跨度><跨度身份标识="v6">5折优惠</跨度>
-<>跨度跨度><跨度身份标识="v7">当天发货</跨度>跨度ID="v7">当天发货</跨度><跨度身份标识="v7">当天发货</跨度></>身体跨度<跨度身份标识="v7">当天发货</跨度>s平底锅ID="v7">当天发货</跨度><跨度身份标识="v7">当天发货</跨度>
-<跨度身份标识="v8">现在就能订购</跨度><跨度身份标识="v8">现在就能订购</跨度>span ID="v8">现在就能订购</跨度><跨度身份标识="v8">现在就能订购</跨度>span ID="v8">现在就能订购</跨度><跨度身份标识="v8">现在就能订购</跨度>span ID="v8">现在就能订购</跨度><跨度身份标识="v8">现在就能订购</跨度>
-</div></div>div></div>div></div>div></div> 
-<按钮身份标识="v9"班级="buy-btn"onClick="ShowModal()">点击购买</按钮><按钮身份标识="v9"班级="buy-btn"onClick="ShowModal()">点击购买</按钮>按钮id="v9"class="buy-btn"onclick="ShowModal()">点击购买</按钮><按钮身份标识="v9"班级="buy-btn"onClick="ShowModal()">点击购买</按钮>button id="v9"class="buy-btn"onclick="ShowModal()">点击购买</按钮><按钮身份标识="v9"班级="buy-btn"onClick="ShowModal()">点击购买</按钮>button id="v9"class="buy-btn"onclick="ShowModal()">点击购买</按钮><按钮身份标识="v9"班级="buy-btn"onClick="ShowModal()">点击购买</按钮>按钮身份标识="v9"班级="buy-btn"onClick="ShowModal()">点击购买</按钮><按钮身份标识="v9"班级="buy-btn"onClick="ShowModal()">点击购买</按钮>按钮id="v9"class="buy-btn"onclick="ShowModal()">点击购买</按钮><按钮身份标识="v9"班级="buy-btn"onClick="ShowModal()">点击购买</按钮>button id="v9"class="buy-btn"onclick="ShowModal()">点击购买</按钮><按钮身份标识="v9"班级="buy-btn"onClick="ShowModal()">点击购买</按钮>button id="v9"class="buy-btn"onclick="ShowModal()">点击购买</按钮><按钮身份标识="v9"班级="buy-btn"onClick="ShowModal()">点击购买</按钮> 
-<div班级="模态"身份标识="模态"><div班级="模态"身份标识="模态">div class="modal"id="modal"><div班级="模态"身份标识="模态">div class="modal"id="modal"><div班级="模态"身份标识="模态">div class="modal"id="modal"><div班级="模态"身份标识="模态">
-我只能是🐾灰澜🐾的
-</div></div>div></div>div></div>div></div>div></div>div></div>div></div>div></div>
-"模态", 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000) ; }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000) ; }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000); }, 3000);, 3000);}, 3000);, 3000);}, 3000);, 3000);}, 3000);
->
-函数ShowModal
-模态。风格。显示=
-var模态的=文档.
-<
-<
-/超文本标记语言>HTMLHTML>html>html>HTMLHTML>html>/
-文档。getElementById
-<
-<
-<
+    </style> 
+  <script src="js/jq.js"></script> 
+ </head> 
+ <body id="v1"> 
+  <div id="v2" class="container"> 
+   <h1 id="v3">钛风🐾来財版</h1> 
+   <img id="v4" class="goods-img" src="/sdcard/Pictures/QQ/Image_1770534776020.png" alt="钛风来財版"> 
+   <div id="v5" class="tags"> 
+    <span id="v6">5折优惠</span> 
+    <span id="v7">当天发货</span> 
+    <span id="v8">现在就能订购</span> 
+   </div> 
+   <button id="v9" class="buy-btn" onclick="showModal()">点击购买</button> 
+   <div class="modal" id="modal">
+     我只能是🐾灰澜🐾的 
+   </div> 
+  </div> 
+  <script>
+    function showModal() {
+        var modal = document.getElementById("modal");
+        modal.style.display = "block";
+        setTimeout(function() {
+            modal.style.display = "none";
+        }, 3000);
+    }
+</script> }  
+ </body>
+</html> 
