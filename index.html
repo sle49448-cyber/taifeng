@@ -42,7 +42,6 @@
             border-radius: 8px;
         }
 
-        /* 发光文字容器，无序号 */
         .glow-text-group {
             display: flex;
             flex-direction: column;
@@ -50,16 +49,14 @@
             margin-bottom: 2rem;
         }
 
+        /* 🔥 这里修复：发光更柔和、文字超级清晰 */
         .glow-text {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: bold;
-            color: #fff;
-            /* 发光效果 */
+            color: #ff9500;
             text-shadow: 
-                0 0 5px #ffd700,
-                0 0 10px #ffd700,
-                0 0 15px #ffd700,
-                0 0 20px #ffd700;
+                0 0 3px #ff9500,
+                0 0 6px #ff9500;
         }
 
         .btn-group {
@@ -99,7 +96,6 @@
             transform: translateY(-2px);
         }
 
-        /* 弹窗样式 */
         .popup {
             position: fixed;
             top: 50%;
@@ -123,7 +119,6 @@
             visibility: visible;
         }
 
-        /* 惊喜页面样式 */
         .surprise-page {
             display: none;
             position: fixed;
@@ -136,7 +131,7 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            gap: 2rem;
+            gap: 1.5rem;
         }
 
         .surprise-page.show {
@@ -176,78 +171,163 @@
             border-radius: 8px;
             cursor: pointer;
         }
+
+        /* 密钥弹窗样式 */
+        .key-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            z-index: 2000;
+            display: none;
+            text-align: center;
+            width: 90%;
+            max-width: 350px;
+        }
+
+        .key-popup.show {
+            display: block;
+        }
+
+        .key-popup input {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .key-btn {
+            padding: 10px 20px;
+            background: #722ed1;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .key-tip {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <div class="product-card">
-        <h1 class="product-title">钛风🐾来財版</h1>
-        
-        <img 
-            src="https://img.cdn1.vip/i/69996e6779e73_1771662951.webp" 
-            alt="钛风来財版产品图" 
-            class="product-image"
-        >
 
-        <!-- 发光文字，无序号 -->
-        <div class="glow-text-group">
-            <div class="glow-text">5折优惠</div>
-            <div class="glow-text">当天发货</div>
-            <div class="glow-text">现在就能订购</div>
-        </div>
+<div class="product-card">
+    <h1 class="product-title">钛风🐾来財版</h1>
+    
+    <img 
+        src="https://img.cdn1.vip/i/69996e6779e73_1771662951.webp" 
+        alt="钛风来財版产品图" 
+        class="product-image"
+    >
 
-        <div class="btn-group">
-            <button class="buy-btn" id="buyBtn">点击购买</button>
-            <button class="surprise-btn" id="surpriseBtn">小惊喜</button>
-        </div>
+    <div class="glow-text-group">
+        <div class="glow-text">5折优惠</div>
+        <div class="glow-text">当天发货</div>
+        <div class="glow-text">现在就能订购</div>
     </div>
 
-    <!-- 弹窗 -->
-    <div class="popup" id="popup">我只能是@🐾灰澜🐾ʰᵘᵉⁱ ˡᵃⁿ⚡️的</div>
-
-    <!-- 惊喜页面 -->
-    <div class="surprise-page" id="surprisePage">
-        <h2>选择你的惊喜</h2>
-        <button class="surprise-option" id="surprise1">惊喜一</button>
-        <button class="surprise-option" id="surprise2">惊喜二</button>
-        <button class="back-btn" id="backBtn">返回</button>
+    <div class="btn-group">
+        <button class="buy-btn" id="buyBtn">点击购买</button>
+        <button class="surprise-btn" id="surpriseBtn">小惊喜</button>
     </div>
+</div>
 
-    <script>
-        const buyBtn = document.getElementById('buyBtn');
-        const popup = document.getElementById('popup');
-        const surpriseBtn = document.getElementById('surpriseBtn');
-        const surprisePage = document.getElementById('surprisePage');
-        const surprise1 = document.getElementById('surprise1');
-        const surprise2 = document.getElementById('surprise2');
-        const backBtn = document.getElementById('backBtn');
+<!-- 购买弹窗 -->
+<div class="popup" id="popup">我只能是@🐾灰澜🐾ʰᵘᵉⁱ ˡᵃⁿ⚡️的</div>
 
-        // 购买按钮逻辑
-        buyBtn.addEventListener('click', function() {
-            popup.classList.add('show');
-            setTimeout(() => {
-                popup.classList.remove('show');
-            }, 3000);
-        });
+<!-- 惊喜页面 -->
+<div class="surprise-page" id="surprisePage">
+    <h2>选择你的惊喜</h2>
+    <button class="surprise-option" id="surprise1">惊喜一</button>
+    <button class="surprise-option" id="surprise2">惊喜二</button>
+    <button class="surprise-option" id="surprise3">惊喜三</button>
+    <button class="back-btn" id="backBtn">返回</button>
+</div>
 
-        // 打开惊喜页面
-        surpriseBtn.addEventListener('click', function() {
-            surprisePage.classList.add('show');
-        });
+<!-- 惊喜三密钥验证 -->
+<div class="key-popup" id="keyPopup">
+    <h3>请输入惊喜密钥</h3>
+    <input type="text" id="keyInput" placeholder="请输入密钥">
+    <div class="key-tip" id="keyTip">密钥错误，请重新输入</div>
+    <button class="key-btn" id="submitKey">确认解锁</button>
+</div>
 
-        // 惊喜一跳转
-        surprise1.addEventListener('click', function() {
-            window.open('https://img.cdn1.vip/i/69997b001933d_1771666176.webp', '_blank');
-        });
+<script>
+    const buyBtn = document.getElementById('buyBtn');
+    const popup = document.getElementById('popup');
+    const surpriseBtn = document.getElementById('surpriseBtn');
+    const surprisePage = document.getElementById('surprisePage');
+    const backBtn = document.getElementById('backBtn');
 
-        // 惊喜二跳转
-        surprise2.addEventListener('click', function() {
-            window.open('https://img.cdn1.vip/i/69997e088e253_1771666952.webp');
-        });
+    // 购买按钮
+    buyBtn.onclick = () => {
+        popup.classList.add('show');
+        setTimeout(() => popup.classList.remove('show'), 3000);
+    };
 
-        // 返回按钮
-        backBtn.addEventListener('click', function() {
-            surprisePage.classList.remove('show');
-        });
-    </script>
+    // 打开惊喜页
+    surpriseBtn.onclick = () => surprisePage.classList.add('show');
+    backBtn.onclick = () => surprisePage.classList.remove('show');
+
+    // 惊喜一
+    document.getElementById('surprise1').onclick = () => {
+        window.open('https://img.cdn1.vip/i/69997b001933d_1771666176.webp', '_blank');
+    };
+
+    // 惊喜二
+    document.getElementById('surprise2').onclick = () => {
+        window.open('https://img.cdn1.vip/i/69996e6779e73_1771662951.webp', '_blank');
+    };
+
+    // 惊喜三（带密钥）
+    const keyPopup = document.getElementById('keyPopup');
+    const keyInput = document.getElementById('keyInput');
+    const keyTip = document.getElementById('keyTip');
+    const submitKey = document.getElementById('submitKey');
+    const correctKey = 'taifeng78cnb';
+    const url3 = 'https://ar2d33-p434z18sp66t-034.fwxsshjf.cn/adamo/PGDGH/PG02.html?k=D582RK9s2Ym0DZpZiM1ITOyMTM4ITM9o3YU3IJHCFS#1771666095726';
+
+    document.getElementById('surprise3').onclick = () => {
+        keyPopup.classList.add('show');
+        keyTip.style.display = 'none';
+        keyInput.value = '';
+        keyInput.focus();
+    };
+
+    function forceOpen(url) {
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    submitKey.onclick = () => {
+        const key = keyInput.value.trim();
+        if (key === correctKey) {
+            forceOpen(url3);
+            keyPopup.classList.remove('show');
+        } else {
+            keyTip.style.display = 'block';
+        }
+    };
+
+    keyInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') submitKey.click();
+    });
+</script>
+
 </body>
 </html>
