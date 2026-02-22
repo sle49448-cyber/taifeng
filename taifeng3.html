@@ -5,28 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>密钥商城</title>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif;}
-  body{background:#111217;color:#fff;padding:20px;}
+  *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+  body{background:#111217;color:#fff}
 
-  /* 左上角管理员 */
-  #adminBtn{
-    position: fixed;
-    top:10px;
-    left:10px;
-    padding:6px 12px;
+  /* 右上角管理员（低调小按钮） */
+  .admin-btn{
+    position:fixed;
+    top:8px;
+    right:8px;
+    padding:4px 8px;
+    font-size:12px;
     background:#222;
-    color:#fff;
-    border:1px solid #666;
-    border-radius:6px;
+    color:#ccc;
+    border:1px solid #444;
+    border-radius:4px;
     cursor:pointer;
+    opacity:0.7;
   }
+  .admin-btn:hover{opacity:1}
 
   .container{
     max-width:400px;
-    margin:80px auto;
+    margin:70px auto;
+    padding:0 20px;
     text-align:center;
   }
-  .box{
+  .card{
     background:#1a1c25;
     padding:30px;
     border-radius:14px;
@@ -46,72 +50,116 @@
     cursor:pointer;
     margin-top:10px;
   }
-  .buy{
+  .buy-btn{
     background:#4fc3f7;
     color:#000;
+  }
+  .login-tip{
+    margin-top:15px;
+    color:#4fc3f7;
+    cursor:pointer;
+    font-size:14px;
   }
 </style>
 </head>
 
 <body>
 
-<button id="adminBtn">管理员</button>
+<!-- 右上角管理员 -->
+<button class="admin-btn" onclick="showAdmin()">管理员</button>
 
 <div class="container">
-  <div class="box">
+  <div class="card">
     <h2>密钥购买</h2>
     <div class="price">¥0.50</div>
-    <button class="buy" onclick="buyNow()">立即购买</button>
+    <button class="buy-btn" onclick="toBuy()">立即购买</button>
+    <div class="login-tip" onclick="showLogin()">登录 / 注册</div>
   </div>
 </div>
 
 <script>
-// 本地数据
-let keys = JSON.parse(localStorage.getItem('keys') || '[]');
+// 数据
+let users = JSON.parse(localStorage.getItem('users') || '[]');
+let keys  = JSON.parse(localStorage.getItem('keys') || '[]');
+let loginUser = localStorage.getItem('loginUser');
 
-// 自动生成密钥（永远不会库存不足）
-function autoGenKey(){
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let key = '';
-  for(let i=0;i<10;i++){
-    key += chars[Math.floor(Math.random()*chars.length)];
-  }
-  keys.push({key:key, used:false});
+// 生成密钥
+function genKey() {
+  const s = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let k = '';
+  for(let i=0;i<10;i++) k += s[Math.floor(Math.random()*s.length)];
+  keys.push({key:k, used:false});
   localStorage.setItem('keys', JSON.stringify(keys));
 }
 
-// 购买
-function buyNow(){
-  // 打开收款码新页面
+// 登录注册
+function showLogin() {
+  let user = prompt('用户名：');
+  if(!user) return;
+  let pwd = prompt('密码：');
+  if(!pwd) return;
+
+  let find = users.find(u => u.user === user);
+  if(find) {
+    if(find.pwd !== pwd) return alert('密码错误');
+    loginUser = user;
+    localStorage.setItem('loginUser', user);
+    alert('登录成功');
+  } else {
+    users.push({user:user, pwd:pwd});
+    localStorage.setItem('users', JSON.stringify(users));
+    loginUser = user;
+    localStorage.setItem('loginUser', user);
+    alert('注册并登录成功');
+  }
+}
+
+// 购买（必须登录）
+function toBuy() {
+  if(!loginUser) {
+    alert('请先登录');
+    showLogin();
+    return;
+  }
+
+  // 打开收款码
   window.open('https://img.cdn1.vip/i/699a9448c8f02_1771738840.webp');
-  
+
   // 保证有密钥
-  if(keys.length === 0) autoGenKey();
-  let find = keys.find(k=>!k.used);
-  if(!find){
-    autoGenKey();
-    find = keys.find(k=>!k.used);
-  }
-  
-  find.used = true;
+  if(keys.filter(x=>!x.used).length === 0) genKey();
+  let key = keys.find(x=>!x.used);
+  key.used = true;
+  key.user = loginUser;
   localStorage.setItem('keys', JSON.stringify(keys));
-  alert('购买成功！密钥：' + find.key);
+
+  // 新开页面显示密钥
+  let win = window.open('', 'key');
+  win.document.write(`
+  <title>购买成功</title>
+  <body style="background:#111;color:#fff;padding:40px;text-align:center">
+    <h2>支付成功</h2>
+    <h3>您的密钥：</h3>
+    <h1 style="color:#4fc3f7">${key.key}</h1>
+    <p>请妥善保管</p>
+  </body>
+  `);
 }
 
-// 管理员登录
-document.getElementById('adminBtn').onclick = function(){
-  let pwd = prompt('请输入管理员密码：');
-  if(pwd === 'taifeng'){
-    // 打开新管理页面
-    window.open('','admin').document.write(`
-      <title>管理后台</title>
-      <body style="background:#111;color:#fff;padding:30px;">
-        <h1>管理后台</h1>
-        <h3>密钥列表</h3>
-        <pre>${JSON.stringify(keys,null,2)}</pre>
-      </body>
+// 管理员
+function showAdmin() {
+  let pwd = prompt('管理员密码：');
+  if(pwd === 'taifeng') {
+    let win = window.open('', 'admin');
+    win.document.write(`
+    <title>管理后台</title>
+    <body style="background:#111;color:#fff;padding:30px;">
+      <h2>用户列表</h2>
+      <pre>${JSON.stringify(users,null,2)}</pre>
+      <h2>密钥记录</h2>
+      <pre>${JSON.stringify(keys,null,2)}</pre>
+    </body>
     `);
-  }else{
+  } else {
     alert('密码错误');
   }
 }
