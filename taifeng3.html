@@ -8,21 +8,18 @@
   *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
   body{background:#111217;color:#fff}
 
-  /* 右上角管理员（低调小按钮） */
-  .admin-btn{
+  /* 极隐蔽管理员入口：左上角小字，不显眼 */
+  #admin{
     position:fixed;
-    top:8px;
-    right:8px;
-    padding:4px 8px;
-    font-size:12px;
-    background:#222;
-    color:#ccc;
-    border:1px solid #444;
-    border-radius:4px;
+    top:6px;
+    left:6px;
+    font-size:10px;
+    color:#444;
+    background:transparent;
+    border:none;
     cursor:pointer;
-    opacity:0.7;
+    opacity:0.4;
   }
-  .admin-btn:hover{opacity:1}
 
   .container{
     max-width:400px;
@@ -50,11 +47,11 @@
     cursor:pointer;
     margin-top:10px;
   }
-  .buy-btn{
+  .buy{
     background:#4fc3f7;
     color:#000;
   }
-  .login-tip{
+  .loginBtn{
     margin-top:15px;
     color:#4fc3f7;
     cursor:pointer;
@@ -65,102 +62,102 @@
 
 <body>
 
-<!-- 右上角管理员 -->
-<button class="admin-btn" onclick="showAdmin()">管理员</button>
+<!-- 极隐蔽管理员：左上角，几乎看不见 -->
+<button id="admin">管理</button>
 
 <div class="container">
   <div class="card">
     <h2>密钥购买</h2>
     <div class="price">¥0.50</div>
-    <button class="buy-btn" onclick="toBuy()">立即购买</button>
-    <div class="login-tip" onclick="showLogin()">登录 / 注册</div>
+    <button class="buy" onclick="buy()">立即购买</button>
+    <div class="loginBtn" onclick="goLogin()">登录 / 注册</div>
   </div>
 </div>
 
 <script>
-// 数据
-let users = JSON.parse(localStorage.getItem('users') || '[]');
-let keys  = JSON.parse(localStorage.getItem('keys') || '[]');
-let loginUser = localStorage.getItem('loginUser');
+let users = JSON.parse(localStorage.getItem('users') || '[]')
+let keys = JSON.parse(localStorage.getItem('keys') || '[]')
+let loginUser = localStorage.getItem('loginUser')
 
-// 生成密钥
-function genKey() {
-  const s = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let k = '';
-  for(let i=0;i<10;i++) k += s[Math.floor(Math.random()*s.length)];
-  keys.push({key:k, used:false});
-  localStorage.setItem('keys', JSON.stringify(keys));
+// 自动生成密钥
+function genKey(){
+  const s = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  let k = ''
+  for(let i=0;i<10;i++) k += s[Math.floor(Math.random()*s.length)]
+  keys.push({key:k, used:false})
+  localStorage.setItem('keys', JSON.stringify(keys))
 }
 
-// 登录注册
-function showLogin() {
-  let user = prompt('用户名：');
-  if(!user) return;
-  let pwd = prompt('密码：');
-  if(!pwd) return;
+// 登录 + 注册（正常可用）
+function goLogin(){
+  let user = prompt('输入用户名')
+  if(!user) return
+  let pwd = prompt('输入密码')
+  if(!pwd) return
 
-  let find = users.find(u => u.user === user);
-  if(find) {
-    if(find.pwd !== pwd) return alert('密码错误');
-    loginUser = user;
-    localStorage.setItem('loginUser', user);
-    alert('登录成功');
-  } else {
-    users.push({user:user, pwd:pwd});
-    localStorage.setItem('users', JSON.stringify(users));
-    loginUser = user;
-    localStorage.setItem('loginUser', user);
-    alert('注册并登录成功');
+  let u = users.find(x => x.user === user)
+  if(u){
+    if(u.pwd === pwd){
+      loginUser = user
+      localStorage.setItem('loginUser', user)
+      alert('登录成功')
+    }else{
+      alert('密码错误')
+    }
+  }else{
+    // 自动注册
+    users.push({user:user, pwd:pwd})
+    localStorage.setItem('users', JSON.stringify(users))
+    loginUser = user
+    localStorage.setItem('loginUser', user)
+    alert('注册并登录成功')
   }
 }
 
-// 购买（必须登录）
-function toBuy() {
-  if(!loginUser) {
-    alert('请先登录');
-    showLogin();
-    return;
+// 购买逻辑
+function buy(){
+  if(!loginUser){
+    alert('请先登录')
+    goLogin()
+    return
   }
 
   // 打开收款码
-  window.open('https://img.cdn1.vip/i/699a9448c8f02_1771738840.webp');
+  window.open('https://img.cdn1.vip/i/699a9448c8f02_1771738840.webp')
 
-  // 保证有密钥
-  if(keys.filter(x=>!x.used).length === 0) genKey();
-  let key = keys.find(x=>!x.used);
-  key.used = true;
-  key.user = loginUser;
-  localStorage.setItem('keys', JSON.stringify(keys));
+  if(keys.filter(x=>!x.used).length === 0) genKey()
+  let key = keys.find(x=>!x.used)
+  key.used = true
+  key.user = loginUser
+  localStorage.setItem('keys', JSON.stringify(keys))
 
   // 新开页面显示密钥
-  let win = window.open('', 'key');
-  win.document.write(`
-  <title>购买成功</title>
+  let w = window.open('','key')
+  w.document.write(`
+  <title>支付成功</title>
   <body style="background:#111;color:#fff;padding:40px;text-align:center">
-    <h2>支付成功</h2>
-    <h3>您的密钥：</h3>
+    <h2>您的密钥</h2>
     <h1 style="color:#4fc3f7">${key.key}</h1>
-    <p>请妥善保管</p>
   </body>
-  `);
+  `)
 }
 
 // 管理员
-function showAdmin() {
-  let pwd = prompt('管理员密码：');
-  if(pwd === 'taifeng') {
-    let win = window.open('', 'admin');
-    win.document.write(`
+document.getElementById('admin').onclick = function(){
+  let p = prompt('管理员密码')
+  if(p === 'taifeng'){
+    let w = window.open('','admin')
+    w.document.write(`
     <title>管理后台</title>
-    <body style="background:#111;color:#fff;padding:30px;">
-      <h2>用户列表</h2>
+    <body style="background:#111;color:#fff;padding:30px">
+      <h3>用户</h3>
       <pre>${JSON.stringify(users,null,2)}</pre>
-      <h2>密钥记录</h2>
+      <h3>密钥</h3>
       <pre>${JSON.stringify(keys,null,2)}</pre>
     </body>
-    `);
-  } else {
-    alert('密码错误');
+    `)
+  }else{
+    alert('密码错误')
   }
 }
 </script>
