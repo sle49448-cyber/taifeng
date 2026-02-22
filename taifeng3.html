@@ -106,9 +106,9 @@
 <div class="main-container">
     <div class="shop-card">
         <h1 class="shop-title">密钥商城</h1>
-        <p>支付后自动发放密钥</p>
-        <div class="price-text">¥ 0.50</div>
-        <button class="buy-button" onclick="buyAction()">立即购买</button>
+        <p>登录后即可领取密钥</p>
+        <div class="price-text">免费领取</div>
+        <button class="buy-button" onclick="buyAction()">立即领取</button>
         <div class="login-area">
             <span class="login-text" onclick="openLoginPanel()">登录 / 注册</span>
         </div>
@@ -188,17 +188,14 @@ function openLoginPanel() {
 }
 
 // ======================================================
-// 购买动作
+// 领取密钥（已去掉支付环节）
 // ======================================================
 function buyAction() {
     if (!currentLoginUser) {
-        alert("请先登录再购买！");
+        alert("请先登录再领取！");
         openLoginPanel();
         return;
     }
-
-    // 打开收款码
-    window.open('https://img.cdn1.vip/i/699a9448c8f02_1771738840.webp', '_blank');
 
     // 保证库存
     let availableKeys = keyList.filter(item => item.used === false);
@@ -227,14 +224,14 @@ function buyAction() {
     <html>
     <head>
         <meta charset="UTF-8">
-        <title>购买成功</title>
+        <title>领取成功</title>
         <style>
             body{background:#111217;color:#fff;padding:50px;text-align:center;font-family:Arial}
             h1{color:#4fc3f7}
         </style>
     </head>
     <body>
-        <h2>支付成功</h2>
+        <h2>领取成功</h2>
         <h3>您的密钥：</h3>
         <h1>${targetKeyObj.key}</h1>
         <p>请妥善保管，不要泄露他人</p>
