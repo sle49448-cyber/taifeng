@@ -1,346 +1,119 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>密钥商城</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft YaHei",sans-serif}
-body{background:#111217;color:#e6e6e6;line-height:1.6}
-
-/* 左上角管理员入口 */
-.admin-top{
-    position: fixed;
-    top:10px;
-    left:10px;
-    z-index:9999;
-}
-.admin-top button{
-    background:#222;
-    color:#aaa;
-    border:1px solid #444;
-    padding:6px 10px;
-    border-radius:6px;
-    cursor:pointer;
-    font-size:12px;
-}
-.admin-top button:hover{
-    color:#fff;
-    border-color:#666;
-}
-
-.container{max-width:400px;margin:80px auto;padding:0 20px}
-.card{background:#1a1c25;border-radius:12px;padding:25px;border:1px solid #2d2f3a;text-align:center;margin-bottom:20px}
-.card h2{color:#fff;margin-bottom:10px}
-.desc{color:#999;margin-bottom:20px}
-.price{font-size:28px;font-weight:bold;color:#4fc3f7;margin-bottom:20px}
-.btn{display:block;width:100%;padding:14px;background:#4fc3f7;color:#111;border-radius:8px;font-weight:bold;border:none;cursor:pointer;font-size:16px}
-.btn:hover{background:#35a5d6}
-.link{text-align:center;margin-top:10px}
-.link a{color:#4fc3f7;text-decoration:none;font-size:14px;cursor:pointer}
-
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center}
-.modal-box{background:#1a1c25;max-width:360px;padding:25px;border-radius:12px;border:1px solid #2d2f3a;position:relative;text-align:center}
-.close{position:absolute;top:12px;right:16px;color:#999;font-size:20px;cursor:pointer}
-.modal-box h3{margin-bottom:15px}
-.form-item{margin-bottom:15px;text-align:left}
-.form-item label{display:block;font-size:14px;margin-bottom:6px;color:#ccc}
-.form-item input{width:100%;padding:12px;background:#252836;border:1px solid #2d2f3a;border-radius:6px;color:#fff;outline:none}
-.pay-code img{width:180px;height:180px;margin:15px auto;border-radius:8px;border:2px solid #2d2f3a}
-.pay-tips{color:#4fc3f7;margin:10px 0;font-weight:bold}
-.modal-btn{width:100%;padding:12px;background:#4fc3f7;color:#111;border:none;border-radius:6px;font-weight:bold;cursor:pointer;margin-top:10px}
-#orderList,#keyList{text-align:left;max-height:250px;overflow:auto;margin-top:10px}
-.key-item{padding:8px 0;border-bottom:1px solid #333;font-size:14px}
-</style>
-
-<div class="admin-top">
-    <button onclick="showAdminPwdPanel">管理员</button>
-</div>
-
-<div class="container">
-    <div class="card" id="shopCard">
-        <h2>密钥购买</h2>
-        <p class="desc">支付后自动发放密钥</p>
-        <div class="price">¥0.50</div>
-        <button class="btn" onclick="buy()">立即购买</button>
-    </div>
-    <div class="link">
-        <a id="loginBtn" onclick="openLogin()">登录 / 注册</a>
-        <a id="userInfo" style="display:none;" onclick="openUser()">用户中心</a>
-    </div>
-</div>
-
-<!-- 登录 -->
-<div class="modal" id="loginModal">
-    <div class="modal-box">
-        <span class="close" onclick="closeModal()">×</span>
-        <h3>登录</h3>
-        <div class="form-item"><label>用户名</label><input id="login_user"></div>
-        <div class="form-item"><label>密码</label><input type="password" id="login_pwd"></div>
-        <button class="modal-btn" onclick="login()">登录</button>
-        <div style="margin-top:10px;font-size:14px">没有账号？<a style="color:#4fc3f7;cursor:pointer" onclick="switchReg()">去注册</a></div>
-    </div>
-</div>
-
-<!-- 注册 -->
-<div class="modal" id="regModal">
-    <div class="modal-box">
-        <span class="close" onclick="closeModal()">×</span>
-        <h3>注册</h3>
-        <div class="form-item"><label>用户名</label><input id="reg_user"></div>
-        <div class="form-item"><label>密码</label><input type="password" id="reg_pwd"></div>
-        <button class="modal-btn" onclick="reg()">注册</button>
-        <div style="margin-top:10px;font-size:14px">已有账号？<a style="color:#4fc3f7;cursor:pointer" onclick="switchLogin()">去登录</a></div>
-    </div>
-</div>
-
-<!-- 支付 -->
-<div class="modal" id="payModal">
-    <div class="modal-box">
-        <span class="close" onclick="closePay()">×</span>
-        <h3>微信支付</h3>
-        <div class="pay-tips">金额：¥0.50</div>
-        <div class="pay-code"><img src="https://img.cdn1.vip/i/699a96d8b8f02_1771738840.webp" alt="收款码"></div>
-        <button class="modal-btn" onclick="payOk()">已支付，获取密钥</button>
-    </div>
-</div>
-
-<!-- 用户中心 -->
-<div class="modal" id="userModal">
-    <div class="modal-box">
-        <span class="close" onclick="closeUser()">×</span>
-        <h3>用户中心</h3>
-        <div id="orderList"></div>
-        <button class="modal-btn" style="background:#666;margin-top:10px" onclick="logout()">退出登录</button>
-    </div>
-</div>
-
-<!-- 管理员密码弹窗 -->
-<div class="modal" id="adminPwdModal">
-    <div class="modal-box">
-        <span class="close" onclick="closeAdminPwd()">×</span>
-        <h3>管理员验证</h3>
-        <div class="form-item"><label>请输入密码</label><input type="password" id="admin_pwd"></div>
-        <button class="modal-btn" onclick="checkAdmin()">确认进入</button>
-    </div>
-</div>
-
-<!-- 管理员后台 -->
-<div class="modal" id="adminModal">
-    <div class="modal-box" style="max-width:500px">
-        <span class="close" onclick="closeAdmin()">×</span>
-        <h3>密钥管理</h3>
-        <button class="modal-btn" onclick="genKey()">随机生成密钥</button>
-        <div id="keyList"></div>
-    </div>
-</div>
-
-<script>
-let users = JSON.parse(localStorage.getItem('users')) || [];
-let keys = JSON.parse(localStorage.getItem('keys')) || [];
-let orders = JSON.parse(localStorage.getItem('orders')) || [];
-let loginUser = localStorage.getItem('loginUser');
-
-// 管理员密码 taifeng 的 SHA256（前端无明文）
-const ADMIN_HASH = "0f962afa09b5b8e09e77f5a1eb7253b472c5d2436da6e0b75817bfe171c55c00";
-
-async function sha256(s){
-    const e=new TextEncoder().encode(s);
-    const t=await crypto.subtle.digest("SHA-256",e);
-    return Array.from(new Uint8Array(t)).map(b=>b.toString(16).padStart(2,"0")).join("")
-}
-
-// 左上角管理员入口
-function showAdminPwdPanel(){
-    document.getElementById('adminPwdModal').style.display='flex';
-}
-function closeAdminPwd(){
-    document.getElementById('adminPwdModal').style.display='none';
-}
-
-async function checkAdmin(){
-    const p=document.getElementById('admin_pwd').value.trim();
-    if(!p)return;
-    const h=await sha256(p);
-    if(h===ADMIN_HASH){
-        closeAdminPwd();
-        document.getElementById('adminModal').style.display='flex';
-        renderAdminKeys();
-    }else{
-        alert('密码错误');
-    }
-}
-
-// 登录注册
-function openLogin(){document.getElementById('loginModal').style.display='flex'}
-function closeModal(){document.getElementById('loginModal').style.display='none';document.getElementById('regModal').style.display='none'}
-function switchReg(){closeModal();document.getElementById('regModal').style.display='flex'}
-function switchLogin(){closeModal();document.getElementById('loginModal').style.display='flex'}
-
-async function login(){
-    const u=document.getElementById('login_user').value.trim();
-    const p=document.getElementById('login_pwd').value.trim();
-    const h=await sha256(p);
-    const fu=users.find(x=>x.user===u&&x.pwd===h);
-    if(!fu)return alert('账号或密码错误');
-    loginUser=u;localStorage.setItem('loginUser',u);closeModal();updateUI();alert('登录成功')
-}
-
-async function reg(){
-    const u=document.getElementById('reg_user').value.trim();
-<!DOCTYPE html>
-<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>密钥商城</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#111217;color:#fff}
+  *{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif;}
+  body{background:#111217;color:#fff;padding:20px;}
 
-/* 左上角管理员 */
-.admin-btn{
-  position:fixed;top:10px;left:10px;
-  background:#222;color:#ccc;
-  border:1px solid #555;padding:6px 10px;
-  border-radius:6px;cursor:pointer
-}
+  /* 左上角管理员 */
+  #adminBtn{
+    position: fixed;
+    top:10px;
+    left:10px;
+    padding:6px 12px;
+    background:#222;
+    color:#fff;
+    border:1px solid #666;
+    border-radius:6px;
+    cursor:pointer;
+  }
 
-.container{max-width:400px;margin:100px auto;padding:0 20px}
-.card{background:#1a1c25;padding:25px;border-radius:12px;text-align:center}
-.price{font-size:30px;color:#4fc3f7;margin:20px 0}
-.buy-btn{
-  width:100%;padding:14px;
-  background:#4fc3f7;color:#000;
-  border:none;border-radius:8px;
-  font-size:16px;font-weight:bold;
-  cursor:pointer
-}
-
-/* 弹窗 */
-.modal{
-  position:fixed;top:0;left:0;width:100%;height:100%;
-  background:rgba(0,0,0,.8);display:flex;
-  align-items:center;justify-content:center;
-  z-index:9999
-}
-.modal-box{
-  background:#1a1c25;padding:25px;border-radius:12px;
-  width:90%;max-width:350px;text-align:center
-}
-input{
-  width:100%;padding:12px;margin:10px 0;
-  background:#222;border:1px solid #444;
-  border-radius:6px;color:#fff
-}
-.modal-btn{
-  width:100%;padding:12px;background:#4fc3f7;
-  border:none;border-radius:6px;cursor:pointer
-}
+  .container{
+    max-width:400px;
+    margin:80px auto;
+    text-align:center;
+  }
+  .box{
+    background:#1a1c25;
+    padding:30px;
+    border-radius:14px;
+  }
+  .price{
+    font-size:32px;
+    color:#4fc3f7;
+    margin:20px 0;
+  }
+  button{
+    width:100%;
+    padding:14px;
+    font-size:16px;
+    font-weight:bold;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    margin-top:10px;
+  }
+  .buy{
+    background:#4fc3f7;
+    color:#000;
+  }
 </style>
 </head>
 
 <body>
 
-<!-- 管理员 -->
-<button class="admin-btn" onclick="openAdminModal()">管理员</button>
+<button id="adminBtn">管理员</button>
 
 <div class="container">
-  <div class="card">
+  <div class="box">
     <h2>密钥购买</h2>
     <div class="price">¥0.50</div>
-    <button class="buy-btn" onclick="openQrcode()">立即购买</button>
-  </div>
-</div>
-
-<!-- 收款码弹窗 -->
-<div id="qrcodeModal" class="modal" style="display:none">
-  <div class="modal-box">
-    <h3>扫码支付 0.5 元</h3>
-    <button onclick="window.open('https://img.cdn1.vip/i/699a9d8b8f02_1771738840.webp')" 
-            style="padding:10px 20px;margin:20px 0;cursor:pointer">
-      打开收款码
-    </button>
-    <button class="modal-btn" onclick="getKey()">已支付，获取密钥</button>
-    <button onclick="closeModal('qrcodeModal')" style="margin-top:10px;background:#333;color:#fff;border:none;padding:10px;width:100%;border-radius:6px;cursor:pointer">
-      关闭
-    </button>
-  </div>
-</div>
-
-<!-- 管理员密码弹窗 -->
-<div id="adminModal" class="modal" style="display:none">
-  <div class="modal-box">
-    <h3>管理员登录</h3>
-    <input type="password" id="adminPwd" placeholder="输入密码">
-    <button class="modal-btn" onclick="checkAdmin()">登录</button>
-    <button onclick="closeModal('adminModal')" style="margin-top:10px;background:#333;color:#fff;border:none;padding:10px;width:100%;border-radius:6px;cursor:pointer">
-      关闭
-    </button>
+    <button class="buy" onclick="buyNow()">立即购买</button>
   </div>
 </div>
 
 <script>
 // 本地数据
-let users = JSON.parse(localStorage.getItem('users') || '[]');
 let keys = JSON.parse(localStorage.getItem('keys') || '[]');
-let orders = JSON.parse(localStorage.getItem('orders') || '[]');
 
-// 自动生成初始密钥（解决库存不足）
-if(keys.length === 0) {
-  for(let i=0;i<50;i++) genKey();
-}
-
-// 10位密钥格式
-function genKey(){
-  const c = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let k = '';
-  for(let i=0;i<10;i++) k += c[Math.floor(Math.random()*c.length)];
-  keys.push({key:k, used:false});
+// 自动生成密钥（永远不会库存不足）
+function autoGenKey(){
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let key = '';
+  for(let i=0;i<10;i++){
+    key += chars[Math.floor(Math.random()*chars.length)];
+  }
+  keys.push({key:key, used:false});
   localStorage.setItem('keys', JSON.stringify(keys));
 }
 
-// 打开收款码
-function openQrcode(){
-  document.getElementById('qrcodeModal').style.display = 'flex';
-}
-
-// 取密钥（自动生成，永远不会库存不足）
-function getKey(){
-  if(keys.filter(x=>!x.used).length < 5) genKey();
-  let key = keys.find(x=>!x.used);
-  key.used = true;
+// 购买
+function buyNow(){
+  // 打开收款码新页面
+  window.open('https://img.cdn1.vip/i/699a9448c8f02_1771738840.webp');
+  
+  // 保证有密钥
+  if(keys.length === 0) autoGenKey();
+  let find = keys.find(k=>!k.used);
+  if(!find){
+    autoGenKey();
+    find = keys.find(k=>!k.used);
+  }
+  
+  find.used = true;
   localStorage.setItem('keys', JSON.stringify(keys));
-  closeModal('qrcodeModal');
-  alert('您的密钥：'+ key.key);
+  alert('购买成功！密钥：' + find.key);
 }
 
-// 管理员密码弹窗
-function openAdminModal(){
-  document.getElementById('adminModal').style.display = 'flex';
-}
-
-// 验证密码并打开管理页
-function checkAdmin(){
-  let pwd = document.getElementById('adminPwd').value.trim();
+// 管理员登录
+document.getElementById('adminBtn').onclick = function(){
+  let pwd = prompt('请输入管理员密码：');
   if(pwd === 'taifeng'){
-    closeModal('adminModal');
-    // 打开新页面管理用户
-    window.open('','adminWindow').document.write(`
+    // 打开新管理页面
+    window.open('','admin').document.write(`
       <title>管理后台</title>
-      <body style="background:#111;color:#fff;padding:20px">
-        <h2>用户管理</h2>
-        <pre>${JSON.stringify(users,null,2)}</pre>
-        <h2>密钥</h2>
+      <body style="background:#111;color:#fff;padding:30px;">
+        <h1>管理后台</h1>
+        <h3>密钥列表</h3>
         <pre>${JSON.stringify(keys,null,2)}</pre>
       </body>
     `);
   }else{
     alert('密码错误');
   }
-}
-
-function closeModal(id){
-  document.getElementById(id).style.display = 'none';
 }
 </script>
 
