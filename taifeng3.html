@@ -187,59 +187,162 @@ async function login(){
 
 async function reg(){
     const u=document.getElementById('reg_user').value.trim();
-    const p=document.getElementById('reg_pwd').value.trim();
-    if(users.some(x=>x.user===u))return alert('用户名已存在');
-    const h=await sha256(p);
-    users.push({user:u,pwd:h});localStorage.setItem('users',JSON.stringify(users));
-    alert('注册成功，请登录');switchLogin()
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>密钥商城</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#111217;color:#fff}
+
+/* 左上角管理员 */
+.admin-btn{
+  position:fixed;top:10px;left:10px;
+  background:#222;color:#ccc;
+  border:1px solid #555;padding:6px 10px;
+  border-radius:6px;cursor:pointer
 }
 
-function logout(){loginUser=null;localStorage.removeItem('loginUser');updateUI();closeUser();alert('已退出')}
-function updateUI(){
-    document.getElementById('loginBtn').style.display=loginUser?'none':'inline';
-    document.getElementById('userInfo').style.display=loginUser?'inline':'none'
+.container{max-width:400px;margin:100px auto;padding:0 20px}
+.card{background:#1a1c25;padding:25px;border-radius:12px;text-align:center}
+.price{font-size:30px;color:#4fc3f7;margin:20px 0}
+.buy-btn{
+  width:100%;padding:14px;
+  background:#4fc3f7;color:#000;
+  border:none;border-radius:8px;
+  font-size:16px;font-weight:bold;
+  cursor:pointer
 }
 
-// 购买
-function buy(){if(!loginUser)return alert('请先登录');document.getElementById('payModal').style.display='flex'}
-function closePay(){document.getElementById('payModal').style.display='none'}
+/* 弹窗 */
+.modal{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,.8);display:flex;
+  align-items:center;justify-content:center;
+  z-index:9999
+}
+.modal-box{
+  background:#1a1c25;padding:25px;border-radius:12px;
+  width:90%;max-width:350px;text-align:center
+}
+input{
+  width:100%;padding:12px;margin:10px 0;
+  background:#222;border:1px solid #444;
+  border-radius:6px;color:#fff
+}
+.modal-btn{
+  width:100%;padding:12px;background:#4fc3f7;
+  border:none;border-radius:6px;cursor:pointer
+}
+</style>
+</head>
 
-function payOk(){
-    const fk=keys.find(k=>!k.used);
-    if(!fk)return alert('库存不足，请联系管理员');
-    fk.used=true;
-    const od={user:loginUser,key:fk.key,time:new Date().toLocaleString()};
-    orders.unshift(od);
-    localStorage.setItem('keys',JSON.stringify(keys));
-    localStorage.setItem('orders',JSON.stringify(orders));
-    closePay();alert('购买成功！\n密钥：'+fk.key)
+<body>
+
+<!-- 管理员 -->
+<button class="admin-btn" onclick="openAdminModal()">管理员</button>
+
+<div class="container">
+  <div class="card">
+    <h2>密钥购买</h2>
+    <div class="price">¥0.50</div>
+    <button class="buy-btn" onclick="openQrcode()">立即购买</button>
+  </div>
+</div>
+
+<!-- 收款码弹窗 -->
+<div id="qrcodeModal" class="modal" style="display:none">
+  <div class="modal-box">
+    <h3>扫码支付 0.5 元</h3>
+    <button onclick="window.open('https://img.cdn1.vip/i/699a9d8b8f02_1771738840.webp')" 
+            style="padding:10px 20px;margin:20px 0;cursor:pointer">
+      打开收款码
+    </button>
+    <button class="modal-btn" onclick="getKey()">已支付，获取密钥</button>
+    <button onclick="closeModal('qrcodeModal')" style="margin-top:10px;background:#333;color:#fff;border:none;padding:10px;width:100%;border-radius:6px;cursor:pointer">
+      关闭
+    </button>
+  </div>
+</div>
+
+<!-- 管理员密码弹窗 -->
+<div id="adminModal" class="modal" style="display:none">
+  <div class="modal-box">
+    <h3>管理员登录</h3>
+    <input type="password" id="adminPwd" placeholder="输入密码">
+    <button class="modal-btn" onclick="checkAdmin()">登录</button>
+    <button onclick="closeModal('adminModal')" style="margin-top:10px;background:#333;color:#fff;border:none;padding:10px;width:100%;border-radius:6px;cursor:pointer">
+      关闭
+    </button>
+  </div>
+</div>
+
+<script>
+// 本地数据
+let users = JSON.parse(localStorage.getItem('users') || '[]');
+let keys = JSON.parse(localStorage.getItem('keys') || '[]');
+let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+
+// 自动生成初始密钥（解决库存不足）
+if(keys.length === 0) {
+  for(let i=0;i<50;i++) genKey();
 }
 
-// 用户中心
-function openUser(){
-    document.getElementById('userModal').style.display='flex';
-    const my=orders.filter(o=>o.user===loginUser);
-    let ht='';my.forEach(o=>{ht+=`<div class="key-item">${o.time}<br>🔑 ${o.key}</div>`});
-    document.getElementById('orderList').innerHTML=ht||'暂无订单'
-}
-function closeUser(){document.getElementById('userModal').style.display='none'}
-
-// 密钥生成（10位 大小写+数字）
+// 10位密钥格式
 function genKey(){
-    const c='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let k='';for(let i=0;i<10;i++)k+=c[Math.floor(Math.random()*c.length)];
-    keys.unshift({key:k,used:false});
-    localStorage.setItem('keys',JSON.stringify(keys));
-    renderAdminKeys()
+  const c = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let k = '';
+  for(let i=0;i<10;i++) k += c[Math.floor(Math.random()*c.length)];
+  keys.push({key:k, used:false});
+  localStorage.setItem('keys', JSON.stringify(keys));
 }
 
-function closeAdmin(){document.getElementById('adminModal').style.display='none'}
-function renderAdminKeys(){
-    let ht='';keys.forEach(k=>{ht+=`<div class="key-item">${k.key} — ${k.used?'已使用':'未使用'}</div>`});
-    document.getElementById('keyList').innerHTML=ht
+// 打开收款码
+function openQrcode(){
+  document.getElementById('qrcodeModal').style.display = 'flex';
 }
 
-updateUI();
+// 取密钥（自动生成，永远不会库存不足）
+function getKey(){
+  if(keys.filter(x=>!x.used).length < 5) genKey();
+  let key = keys.find(x=>!x.used);
+  key.used = true;
+  localStorage.setItem('keys', JSON.stringify(keys));
+  closeModal('qrcodeModal');
+  alert('您的密钥：'+ key.key);
+}
+
+// 管理员密码弹窗
+function openAdminModal(){
+  document.getElementById('adminModal').style.display = 'flex';
+}
+
+// 验证密码并打开管理页
+function checkAdmin(){
+  let pwd = document.getElementById('adminPwd').value.trim();
+  if(pwd === 'taifeng'){
+    closeModal('adminModal');
+    // 打开新页面管理用户
+    window.open('','adminWindow').document.write(`
+      <title>管理后台</title>
+      <body style="background:#111;color:#fff;padding:20px">
+        <h2>用户管理</h2>
+        <pre>${JSON.stringify(users,null,2)}</pre>
+        <h2>密钥</h2>
+        <pre>${JSON.stringify(keys,null,2)}</pre>
+      </body>
+    `);
+  }else{
+    alert('密码错误');
+  }
+}
+
+function closeModal(id){
+  document.getElementById(id).style.display = 'none';
+}
 </script>
+
 </body>
 </html>
