@@ -8,7 +8,6 @@
   *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
   body{background:#111217;color:#fff}
 
-  /* 极隐蔽管理员：左上角，几乎看不见 */
   #adminBtn{
     position:fixed;
     top:5px;
@@ -78,16 +77,16 @@ let users = JSON.parse(localStorage.getItem('users') || '[]')
 let keys = JSON.parse(localStorage.getItem('keys') || '[]')
 let loginUser = localStorage.getItem('loginUser')
 
-// 生成密钥
 function genKey() {
   const s = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   let k = ''
-  for (let i = 0; i < 10; i++) k += s[Math.floor(Math.random() * s.length)]
+  for (let i = 0; i < 10; i++) {
+    k += s[Math.floor(Math.random() * s.length)]
+  }
   keys.push({ key: k, used: false })
   localStorage.setItem('keys', JSON.stringify(keys))
 }
 
-// 登录 + 注册
 function goLogin() {
   let user = prompt('用户名：')
   if (!user) return
@@ -112,7 +111,6 @@ function goLogin() {
   }
 }
 
-// 购买 → 自动新开页显示收款码
 function buy() {
   if (!loginUser) {
     alert('请先登录')
@@ -120,17 +118,14 @@ function buy() {
     return
   }
 
-  // 自动新开页面打开收款码
-  window.open('https://img.cdn1.vip/i/699a9448c8f02_1771738840.webp', '_blank')
+  window.open('https://img.cdn1.vip/i/699a9448c8f02_1771738840.webp', '_blank');
 
-  // 发放密钥
   if (keys.filter(x => !x.used).length === 0) genKey()
   let key = keys.find(x => !x.used)
   key.used = true
   key.user = loginUser
   localStorage.setItem('keys', JSON.stringify(keys))
 
-  // 自动新开页面显示密钥
   let win = window.open('', '_blank')
   win.document.write(`
   <title>购买成功</title>
@@ -141,7 +136,6 @@ function buy() {
   `)
 }
 
-// 管理员 → 密码正确 → 自动新开管理页
 document.getElementById('adminBtn').onclick = function () {
   let pwd = prompt('管理员密码：')
   if (pwd === 'taifeng') {
