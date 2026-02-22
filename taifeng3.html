@@ -8,13 +8,13 @@
   *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
   body{background:#111217;color:#fff}
 
-  /* 极隐蔽管理员入口：左上角小字，不显眼 */
-  #admin{
+  /* 极隐蔽管理员：左上角，几乎看不见 */
+  #adminBtn{
     position:fixed;
-    top:6px;
-    left:6px;
+    top:5px;
+    left:5px;
     font-size:10px;
-    color:#444;
+    color:#555;
     background:transparent;
     border:none;
     cursor:pointer;
@@ -23,7 +23,7 @@
 
   .container{
     max-width:400px;
-    margin:70px auto;
+    margin:80px auto;
     padding:0 20px;
     text-align:center;
   }
@@ -47,7 +47,7 @@
     cursor:pointer;
     margin-top:10px;
   }
-  .buy{
+  .buyBtn{
     background:#4fc3f7;
     color:#000;
   }
@@ -62,14 +62,13 @@
 
 <body>
 
-<!-- 极隐蔽管理员：左上角，几乎看不见 -->
-<button id="admin">管理</button>
+<button id="adminBtn">管理</button>
 
 <div class="container">
   <div class="card">
     <h2>密钥购买</h2>
     <div class="price">¥0.50</div>
-    <button class="buy" onclick="buy()">立即购买</button>
+    <button class="buyBtn" onclick="buy()">立即购买</button>
     <div class="loginBtn" onclick="goLogin()">登录 / 注册</div>
   </div>
 </div>
@@ -79,62 +78,62 @@ let users = JSON.parse(localStorage.getItem('users') || '[]')
 let keys = JSON.parse(localStorage.getItem('keys') || '[]')
 let loginUser = localStorage.getItem('loginUser')
 
-// 自动生成密钥
-function genKey(){
+// 生成密钥
+function genKey() {
   const s = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   let k = ''
-  for(let i=0;i<10;i++) k += s[Math.floor(Math.random()*s.length)]
-  keys.push({key:k, used:false})
+  for (let i = 0; i < 10; i++) k += s[Math.floor(Math.random() * s.length)]
+  keys.push({ key: k, used: false })
   localStorage.setItem('keys', JSON.stringify(keys))
 }
 
-// 登录 + 注册（正常可用）
-function goLogin(){
-  let user = prompt('输入用户名')
-  if(!user) return
-  let pwd = prompt('输入密码')
-  if(!pwd) return
+// 登录 + 注册
+function goLogin() {
+  let user = prompt('用户名：')
+  if (!user) return
+  let pwd = prompt('密码：')
+  if (!pwd) return
 
   let u = users.find(x => x.user === user)
-  if(u){
-    if(u.pwd === pwd){
+  if (u) {
+    if (u.pwd === pwd) {
       loginUser = user
       localStorage.setItem('loginUser', user)
       alert('登录成功')
-    }else{
+    } else {
       alert('密码错误')
     }
-  }else{
-    // 自动注册
-    users.push({user:user, pwd:pwd})
+  } else {
+    users.push({ user: user, pwd: pwd })
     localStorage.setItem('users', JSON.stringify(users))
     loginUser = user
     localStorage.setItem('loginUser', user)
-    alert('注册并登录成功')
+    alert('注册成功并登录')
   }
 }
 
-// 购买逻辑
-function buy(){
-  if(!loginUser){
+// 购买 → 自动新开页显示收款码
+function buy() {
+  if (!loginUser) {
     alert('请先登录')
     goLogin()
     return
   }
 
-  // 打开收款码
-  window.open('https://img.cdn1.vip/i/699a9448c8f02_1771738840.webp')
+  // 自动新开页面打开收款码
+  window.open('https://img.cdn1.vip/i/699a9448c8f02_1771738840.webp', '_blank')
 
-  if(keys.filter(x=>!x.used).length === 0) genKey()
-  let key = keys.find(x=>!x.used)
+  // 发放密钥
+  if (keys.filter(x => !x.used).length === 0) genKey()
+  let key = keys.find(x => !x.used)
   key.used = true
   key.user = loginUser
   localStorage.setItem('keys', JSON.stringify(keys))
 
-  // 新开页面显示密钥
-  let w = window.open('','key')
-  w.document.write(`
-  <title>支付成功</title>
+  // 自动新开页面显示密钥
+  let win = window.open('', '_blank')
+  win.document.write(`
+  <title>购买成功</title>
   <body style="background:#111;color:#fff;padding:40px;text-align:center">
     <h2>您的密钥</h2>
     <h1 style="color:#4fc3f7">${key.key}</h1>
@@ -142,21 +141,21 @@ function buy(){
   `)
 }
 
-// 管理员
-document.getElementById('admin').onclick = function(){
-  let p = prompt('管理员密码')
-  if(p === 'taifeng'){
-    let w = window.open('','admin')
-    w.document.write(`
+// 管理员 → 密码正确 → 自动新开管理页
+document.getElementById('adminBtn').onclick = function () {
+  let pwd = prompt('管理员密码：')
+  if (pwd === 'taifeng') {
+    let win = window.open('', '_blank')
+    win.document.write(`
     <title>管理后台</title>
-    <body style="background:#111;color:#fff;padding:30px">
-      <h3>用户</h3>
-      <pre>${JSON.stringify(users,null,2)}</pre>
-      <h3>密钥</h3>
-      <pre>${JSON.stringify(keys,null,2)}</pre>
+    <body style="background:#111;color:#fff;padding:30px;">
+      <h2>用户列表</h2>
+      <pre>${JSON.stringify(users, null, 2)}</pre>
+      <h2>密钥记录</h2>
+      <pre>${JSON.stringify(keys, null, 2)}</pre>
     </body>
     `)
-  }else{
+  } else {
     alert('密码错误')
   }
 }
