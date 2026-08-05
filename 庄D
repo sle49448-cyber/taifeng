@@ -2,8 +2,12 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="refresh" content="0;url=https://youke.img.dns.ltimg.com/20260806/df7082af94002cc702e0656ff8e981c1.jpg">
-<title>跳转中</title>
+<title>跳转页面</title>
+<script>
+window.location.href = "https://youke.img.dns.ltimg.com/20260806/df7082af94002cc702e0656ff8e981c1.jpg";
+</script>
 </head>
 <body>
-<hthl>
+<p>页面自动跳转中，若无反应：<a href="https://youke.img.dns.ltimg.com/20260806/df7082af94002cc702e0656ff8e981c1.jpg">点击此处打开图片</a></p>
+</body>
+</html>
