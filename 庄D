@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
 <meta charset="UTF-8">
 <title>跳转页面</title>
 <script>
@@ -8,6 +7,6 @@ window.location.href = "https://youke.img.dns.ltimg.com/20260806/df7082af94002cc
 </script>
 </head>
 <body>
-<p>页面自动跳转中，若无反应：<a href="https://youke.img.dns.ltimg.com/20260806/df7082af94002cc702e0656ff8e981c1.jpg">点击此处打开图片</a></p>
+<p>页面自动跳转中，若无反应: <a href="https://youke.img.dns.ltimg.com/20260806/df7082af94002cc702e0656ff8e981c1.jpg">点击此处打开图片</a></p>
 </body>
 </html>
